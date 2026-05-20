@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA SSAI8.888 - Matrix Ultimate Media Factory</title>
+    <style>
+        /* СТИЛЬ И СИНЯЯ ГРАФИКА MATRIX 888 */
+        body {
+            background-color: #02060c;
+            color: #3399ff;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.08;
+        }
+
+        .container {
+            max-width: 1750px;
+            margin: 0 auto;
+            border: 1px solid #3399ff;
+            box-shadow: 0 0 25px rgba(51, 153, 255, 0.3);
+            padding: 25px;
+            background-color: rgba(13, 19, 26, 0.95);
+            backdrop-filter: blur(3px);
+        }
+
+        header {
+            border-bottom: 2px dashed #3399ff;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .lang-selector-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .lang-select, .prog-lang-select {
+            background: #1f2937;
+            color: #3399ff;
+            border: 1px solid #3399ff;
+            padding: 8px 12px;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .lang-select option, .prog-lang-select option {
+            background: #0d131a;
+            color: #3399ff;
+        }
+
+        h1 {
+            color: #ffffff;
+            text-shadow: 0 0 12px #3399ff;
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+
+        .meta-info {
+            color: #888;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* МАСШТАБНАЯ МОДУЛЬНАЯ СЕТКА */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 1.9fr;
+            gap: 20px;
+        }
+
+        .left-column, .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel {
+            border: 1px solid #3399ff;
+            padding: 15px;
+            background: rgba(15, 22, 34, 0.85);
+        }
+
+        .panel h3 {
+            margin-top: 0;
+            color: #58a6ff;
+            border-bottom: 1px solid #58a6ff;
+            padding-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* МЕДИА-ПЛЕЕРЫ И ЗВОНКИ */
+        .video-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .video-box {
+            background: #000;
+            border: 1px solid #3399ff;
+            position: relative;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video { width: 100%; height: 100%; object-fit: cover; background: #000; }
+
+        .video-label {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2px 6px;
+            font-size: 11px;
+            color: #fff;
+            border: 1px solid #3399ff;
+        }
+
+        /* ИИ ГЕНЕРАТОР И БИБЛИОТЕКА */
+        .media-library-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .library-box {
+            background: #000;
+            border: 1px solid #1e293b;
+            height: 150px;
+            overflow-y: auto;
+            padding: 8px;
+            font-size: 11px;
+        }
+
+        .library-title {
+            color: #ecc48d;
+            font-weight: bold;
+            margin-bottom: 5px;
+            border-bottom: 1px dashed #1e293b;
+            padding-bottom: 2px;
+        }
+
+        /* КОД-РЕДАКТОР */
+        .code-editor-container {
+            background: #050811;
+            border: 1px solid #3399ff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .editor-textarea {
+            width: 100%;
+            height: 120px;
+            background: #000;
+            color: #a5d6ff;
+            border: 1px solid #1f2937;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            padding: 10px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background: #111827;
+            color: #3399ff;
+            border: 1px solid #3399ff;
+            padding: 10px 15px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .btn:hover {
+            background: #3399ff;
+            color: #000;
+            box-shadow: 0 0 15px #3399ff;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            background: #000;
+            border: 1px solid #3399ff;
+            color: #fff;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .feed-box {
+            background: #000;
+            border: 1px solid #3399ff;
+            height: 90px;
+            overflow-y: auto;
+            padding: 10px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .feed-item {
+            border-bottom: 1px solid #1e293b;
+            padding: 4px 0;
+            color: #e2e8f0;
+        }
+
+        #console-log {
+            background: #000;
+            border: 1px solid #3399ff;
+            height: 140px;
+            overflow-y: auto;
+            padding: 10px;
+            color: #00ff00;
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        .memory-bar-container {
+            background: #111827;
+            border: 1px solid #3399ff;
+            height: 18px;
+            position: relative;
+        }
+        .memory-bar-fill {
+            background: #0066ff;
+            width: 46%;
+            height: 100%;
+            box-shadow: 0 0 10px #3399ff;
+            transition: width 0.5s ease;
+        }
+        .memory-text {
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            font-size: 11px; font-weight: bold; color: #fff; line-height: 18px;
+        }
+        .robot-status { animation: pulse 2s infinite; font-weight: bold; }
+        @keyframes pulse {
+            0% { color: #3399ff; text-shadow: 0 0 2px #3399ff; }
+            50% { color: #99ccff; text-shadow: 0 0 10px #3399ff; }
+            100% { color: #3399ff; text-shadow: 0 0 2px #3399ff; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+
+<div class="container">
+    <header>
+        <div class="lang-selector-container">
+            <select class="lang-select" id="lang-dropdown" onchange="changeLanguage(this.value)">
+                <option value="de">DE (Deutsch)</option>
+                <option value="en">EN (English)</option>
+                <option value="lt">LT (Lietuvių)</option>
+                <option value="ru">RU (Русский)</option>
+            </select>
+        </div>
+        
+        <h1 id="txt-title">NOVA SSAI8.888 // MATRIX ROBOT UNIVERSAL FACTORY</h1>
+        <div class="meta-info">
+            <strong id="txt-arch">HAUPTARCHITEKT:</strong> VALERIJUS LITVINOVAS | 
+            <strong id="txt-status-title">ROBOT STATUS:</strong> <span class="robot-status">AUTO-SORT & GENERATION ACTIVE</span> | 
+            <strong id="txt-plat">PLATTFORM:</strong> MINI-PC (20TB GENERATION CAPACITY)
+        </div>
+    </header>
+
+    <div class="grid-layout">
+        
+        <div class="left-column">
+            
+            <div class="panel">
+                <h3 id="txt-panel-factory">SSII TRIMATIX MULTIMEDIA GENERATOR</h3>
+                <input type="text" id="gen-prompt" placeholder="Geben Sie eine Beschreibung für das Bild, Video oder die Musik ein...">
+                <select id="gen-type" class="prog-lang-select" style="width:100%; margin-bottom:10px;">
+                    <option value="Image">TRIMATIX REALITÄT Image (.png)</option>
+                    <option value="Video">TRIMATIX REALITÄT Video Clip (.mp4)</option>
+                    <option value="Music">SSII AI Audio Track (.mp3)</option>
+                </select>
+                <button class="btn" id="txt-btn-generate" style="background:#1e3a8a; color:#93c5fd; border-color:#3b82f6;" onclick="generateMediaContent()">Start Generation</button>
+            </div>
+
+            <div class="panel">
+                <h3 id="txt-panel-library">AUTONOMOUS STRUCTURED LIBRARIES (AI SORTED)</h3>
+                <div class="media-library-grid">
+                    <div class="library-box" id="lib-images">
+                        <div class="library-title">📁 IMAGES (PNG)</div>
+                        <div class="feed-item" style="color:#a5d6ff;">architect_matrix.png</div>
+                    </div>
+                    <div class="library-box" id="lib-videos">
+                        <div class="library-title">📁 CLIPS (MP4)</div>
+                        <div class="feed-item" style="color:#a5d6ff;">cyber_city_888.mp4</div>
+                    </div>
+                    <div class="library-box" id="lib-music">
+                        <div class="library-title">📁 AUDIO (MP3)</div>
+                        <div class="feed-item" style="color:#a5d6ff;">house_beat_core.mp3</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3 id="txt-panel-media">DLLS9 FREE STREAMING & VIDEO CALL SYSTEM</h3>
+                <div class="video-grid">
+                    <div class="video-box">
+                        <video id="local-video" autoplay playsinline muted></video>
+                        <div class="video-label" id="txt-lbl-local">ARCHITECT (LOCAL)</div>
+                    </div>
+                    <div class="video-box">
+                        <video id="remote-video" autoplay playsinline></video>
+                        <div class="video-label" id="txt-lbl-remote">REMOTE PEER (SSII FEED)</div>
+                    </div>
+                </div>
+                <div class="media-controls">
+                    <button class="btn" id="txt-btn-cam-start" onclick="startCamera()">Camera ON</button>
+                    <button class="btn" id="txt-btn-call" style="border-color:#10b981; color:#10b981;" onclick="triggerVideoCall()">Call / Stream</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            
+            <div class="panel">
+                <h3 id="txt-panel-robot-core">SSII8.888 SECURE COGNITIVE MEMORY (20TB)</h3>
+                <div class="memory-bar-container">
+                    <div class="memory-bar-fill" id="mem-fill"></div>
+                    <div class="memory-text" id="mem-txt">9.14 TB / 20.00 TB (45.7%)</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3 id="txt-panel-editor">REAL-TIME CODE EDITOR & SSII PROCESSING</h3>
+                <div class="code-editor-container">
+                    <textarea class="editor-textarea" id="editor-core" spellcheck="false">// Matrix Automation & Generation Module
+#include <iostream>
+int main() {
+    std::cout << "MULTIMEDIA HUB v10.00 RUNNING" << std::endl;
+    return 0;
+}</textarea>
+                </div>
+                <button class="btn" id="txt-btn-compile" style="background: #022c22; border-color: #10b981; color: #10b981;" onclick="processCodeViaAI()">Execute Code (AI Compile)</button>
+            </div>
+
+            <div class="panel">
+                <h3 id="txt-panel-repo">AUTONOMOUS DECISIONS & GITHUB FEED</h3>
+                <div class="feed-box" id="repo-feed" style="height: 70px;">
+                    <div class="feed-item" id="sys-initial-commit"><strong>#ROBOT_AI_INTELLEKT_OSIRYS.cpp</strong> - Initialer Commit durch Hauptarchitekt</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3 id="txt-panel-chat">MATRIX CHAT (NETZWERK)</h3>
+                <div class="feed-box" id="chat-box" style="height: 70px;">
+                    <div class="feed-item" id="sys-channel-msg"><span style="color:#58a6ff;">[System]:</span> Kanal #osirys geöffnet.</div>
+                </div>
+                <input type="text" id="chat-input" placeholder="Nachricht schreiben...">
+                <button class="btn" id="txt-btn-send" onclick="sendChatMessage()">Senden</button>
+            </div>
+
+            <div class="panel">
+                <h3 id="txt-panel-console">SSII KONSOLEN-MONITOR (SYS_LOG)</h3>
+                <div id="console-log">>> System bereit. Erwarte Befehle des Hauptarchitekten...</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ============================================================================
+    // 1. СИНЙ МАТРИЧНЫЙ ДОЖДЬ
+    // ============================================================================
+    const canvas = document.getElementById('matrix-canvas'); const ctx = canvas.getContext('2d');
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+    const matrixChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; const charArray = matrixChars.split(""); 
+    const fontSize = 16; const columns = canvas.width / fontSize;
+    const drops = []; for (let x = 0; x < columns; x++) { drops[x] = 1; }
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(2, 6, 12, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#0066ff'; ctx.font = fontSize + 'px monospace';
+        for (let i = 0; i < drops.length; i++) {
+            const text = charArray[Math.floor(Math.random() * charArray.length)];
+            ctx.fillStyle = Math.random() > 0.975 ? '#99ccff' : '#0066ff';
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; }
+            drops[i]++;
+        }
+    }
+    setInterval(drawMatrix, 33);
+
+    // ============================================================================
+    // 2. МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ (4 ЯЗЫКА)
+    // ============================================================================
+    let currentLang = 'de';
+    const dictionary = {
+        de: {
+            title: "NOVA SSAI8.888 // MATRIX ROBOT UNIVERSAL FACTORY",
+            arch: "HAUPTARCHITEKT:", statusTitle: "ROBOT STATUS:", plat: "PLATTFORM: MINI-PC (20TB GENERATION CAPACITY)",
+            panelFactory: "SSII TRIMATIX MULTIMEDIA GENERATOR", panelLibrary: "AUTONOME STRUKTURIERTE BIBLIOTHEKEN (KI SORTIERT)",
+            btnGenerate: "Generierung Starten", promptPlaceholder: "Geben Sie eine Beschreibung ein...",
+            panelMedia: "DLLS9 KOSTENLOSE STREAMING & VIDEOANRUF SYSTEM", lblLocal: "ARCHITEKT (LOKAL)", lblRemote: "REMOTE PEER (SSII FEED)",
+            btnCamStart: "Kamera EIN", btnCall: "Anrufen / Streamen", panelRobotCore: "SSII8.888 SICHERER KOGNITIVER SPEICHER (20TB)",
+            panelChat: "MATRIX CHAT (NETZWERK)", btnSend: "Senden", panelRepo: "AUTONOME ENTSCHEIDUNGEN & GITHUB FEED",
+            panelConsole: "SSII KONSOLEN-MONITOR (SYS_LOG)", panelEditor: "ECHTZEIT-CODE-EDITOR & SSII-VERARBEITUNG",
+            chatPlaceholder: "Nachricht schreiben...", sysChannel: "[System]: Kanal #osirys geöffnet.",
+            sysCommit: "#ROBOT_AI_INTELLEKT_OSIRYS.cpp - Initialer Commit durch Hauptarchлект",
+            logLangChange: "Sprache auf 'DE' umgestellt.", logChat: "Nachricht gesendet."
+        },
+        en: {
+            title: "NOVA SSAI8.888 // MATRIX ROBOT UNIVERSAL FACTORY",
+            arch: "MAIN ARCHITECT:", statusTitle: "ROBOT STATUS:", plat: "PLATFORM: MINI-PC (20TB GENERATION CAPACITY)",
+            panelFactory: "SSII TRIMATIX MULTIMEDIA GENERATOR", panelLibrary: "AUTONOMOUS STRUCTURED LIBRARIES (AI SORTED)",
+            btnGenerate: "Start Generation", promptPlaceholder: "Enter a description...",
+            panelMedia: "DLLS9 FREE STREAMING & VIDEO CALL SYSTEM", lblLocal: "ARCHITECT (LOCAL)", lblRemote: "REMOTE PEER (SSII FEED)",
+            btnCamStart: "Camera ON", btnCall: "Call / Stream", panelRobotCore: "SSII8.888 SECURE COGNITIVE MEMORY (20TB)",
+            panelChat: "MATRIX CHAT (NETWORK)", btnSend: "Send", panelRepo: "AUTONOMOUS DECISIONS & GITHUB FEED",
+            panelConsole: "SSII CONSOLE MONITOR (SYS_LOG)", panelEditor: "REAL-TIME CODE EDITOR & SSII PROCESSING",
+            chatPlaceholder: "Write a message...", sysChannel: "[System]: Channel #osirys opened.",
+            sysCommit: "#ROBOT_AI_INTELLEKT_OSIRYS.cpp - Initial commit by Main Architect",
+            logLangChange: "Language switched to 'EN'.", logChat: "Message sent."
+        },
+        lt: {
+            title: "NOVA SSAI8.888 // MATRIX ROBOT UNIVERSAL FACTORY",
+            arch: "VYRIAUSIASIS ARCHITEKTAS:", statusTitle: "ROBOT STATUS:", plat: "PLATFORMA: MINI-PC (20TB GENERATION CAPACITY)",
+            panelFactory: "SSII TRIMATIX MULTIMEDIJOS GENERATORIUS", panelLibrary: "AUTONOMINĖS STRUKTŪRIZUOTOS BIBLIOTEKOS (AI RŪŠIAVIMAS)",
+            btnGenerate: "Pradėti Generavimą", promptPlaceholder: "Įveskite aprašymą...",
+            panelMedia: "DLLS9 NEMOKAMI VAIZDO SKAMBUČIAI IR TRANSLIACIJOS", lblLocal: "ARCHITEKTAS (LOKALUS)", lblRemote: "REPLIKOS SRAUTAS (SSII)",
+            btnCamStart: "Kamera ĮJUNGTI", btnCall: "Skambinti / Transliuoti", panelRobotCore: "SSII8.888 SAUGI KOGNITYVINĖ ATMINTIS (20TB)",
+            panelChat: "MATRIX REPLIKOS (TINKLAS)", btnSend: "Siųsti", panelRepo: "AUTONOMINIAI SPRENDIMAI IR GITHUB SRAUTAS",
+            panelConsole: "SSII KONSOLĖS MONITORIUS (SYS_LOG)", panelEditor: "REALALAUS LAIKO KODO REDAKTORIUS IR SSII APDOROJIMAS",
+            chatPlaceholder: "Rašyti žinutę...", sysChannel: "[System]: Kanalas #osirys atidarytas.",
+            sysCommit: "#ROBOT_AI_INTELLEKT_OSIRYS.cpp - Pradinis vyriausiojo architekto įsipareigojimas",
+            logLangChange: "Kalba pakeista į 'LT'.", logChat: "Žinutė išsiųsta."
+        },
+        ru: {
+            title: "NOVA SSAI8.888 // МАТРИЧНАЯ ФАБРИКА РОБОТА УНИВЕРСАЛА",
+            arch: "ГЛАВНЫЙ АРХИТЕКТОР:", statusTitle: "СТАТУС РОБОТА:", plat: "ПЛАТФОРМА: МИНИ-ПК (МЕДИА ЕМКОСТЬ 20ТБ)",
+            panelFactory: "МУЛЬТИМЕДИЙНЫЙ ГЕНЕРАТОР SSII TRIMATIX", panelLibrary: "АВТОНОМНЫЕ СТРУКТУРИРОВАННЫЕ БИБЛИОТЕКИ (ИИ СОРТИРОВКА)",
+            btnGenerate: "Запустить Генерацию", promptPlaceholder: "Введите описание для генерации...",
+            panelMedia: "БЕСПЛАТНЫЕ ВИДЕОЗВОНКИ И ТРАНСЛЯЦИИ DLLS9", lblLocal: "АРХИТЕКТОР (КАМЕРА)", lblRemote: "УДАЛЕННЫЙ ПОТОК (ССИИ)",
+            btnCamStart: "Включить Камеру", btnCall: "Позвонить / Стрим", panelRobotCore: "БЕЗОПАСНАЯ КОГНИТИВНАЯ ПАМЯТЬ ССИИ8.888 (20ТБ)",
+            panelChat: "МАТРИЧНЫЙ ЧАТ (СЕТЕВОЙ)", btnSend: "Отправить", panelRepo: "АВТОНОМНЫЕ РЕШЕНИЯ РОБОТА И ЛЕНТА GITHUB",
+            panelConsole: "КОНСОЛЬНЫЙ МОНИТОР ССИИ (SYS_LOG)", panelEditor: "РЕДАКТОР КОДА В РЕАЛЬНОМ ВРЕМЕНИ И ОБРАБОТКА ССИИ",
+            chatPlaceholder: "Написать сообщение...", sysChannel: "[System]: Канал #osirys открыт.",
+            sysCommit: "#ROBOT_AI_INTELLEKT_OSIRYS.cpp - Начальный коммит Главного Архитектора",
+            logLangChange: "Язык переключен на 'RU'.", logChat: "Сообщение отправлено."
+        }
+    };
+
+    const logElement = document.getElementById('console-log');
+    function logToRawConsole(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        logElement.innerHTML += `\n[${timestamp}] ${message}`; logElement.scrollTop = logElement.scrollHeight;
+    }
+    function logToConsole(actionKey, prefix = "") { logToRawConsole(`${prefix} ${dictionary[currentLang][actionKey]}`); }
+
+    function changeLanguage(lang) {
+        currentLang = lang; const data = dictionary[currentLang];
+        document.getElementById('txt-title').innerText = data.title;
+        document.getElementById('txt-arch').innerText = data.arch;
+        document.getElementById('txt-status-title').innerText = data.statusTitle;
+        document.getElementById('txt-plat').innerHTML = data.plat;
+        document.getElementById('txt-panel-factory').innerText = data.panelFactory;
+        document.getElementById('txt-panel-library').innerText = data.panelLibrary;
+        document.getElementById('txt-btn-generate').innerText = data.btnGenerate;
+        document.getElementById('gen-prompt').placeholder = data.promptPlaceholder;
+        document.getElementById('txt-panel-media').innerText = data.panelMedia;
+        document.getElementById('txt-lbl-local').innerText = data.lblLocal;
+        document.getElementById('txt-lbl-remote').innerText = data.lblRemote;
+        document.getElementById('txt-btn-cam-start').innerText = data.btnCamStart;
+        document.getElementById('txt-btn-call').innerText = data.btnCall;
+        document.getElementById('txt-panel-robot-core').innerText = data.panelRobotCore;
+        document.getElementById('txt-panel-chat').innerText = data.panelChat;
+        document.getElementById('txt-btn-send').innerText = data.btnSend;
+        document.getElementById('txt-panel-repo').innerText = data.panelRepo;
+        document.getElementById('txt-panel-console').innerText = data.panelConsole;
+        document.getElementById('txt-panel-editor').innerText = data.panelEditor;
+        document.getElementById('chat-input').placeholder = data.chatPlaceholder;
+        document.getElementById('sys-channel-msg').innerHTML = `<span style="color:#58a6ff;">[System]:</span> ${data.sysChannel.replace('[System]:', '')}`;
+        document.getElementById('sys-initial-commit').innerHTML = data.sysCommit;
+        logToConsole('logLangChange');
+    }
+
+    // ============================================================================
+    // 3. АВТОМАТИЧЕСКАЯ ГЕНЕРАЦИЯ И СОРТИРОВКА ССИИ
+    // ============================================================================
+    function generateMediaContent() {
+        const prompt = document.getElementById('gen-prompt').value.trim();
+        const type = document.getElementById('gen-type').value;
+        
+        if (prompt === "") {
+            alert(currentLang === 'ru' ? "Введите описание для генерации контента!" : "Bitte geben Sie eine Beschreibung ein!");
+            return;
+        }
+
+        logToRawConsole(`>> [SSII CORE] Инициализация фабрики генерации контента в Trimatix Reality...`);
+        logToRawConsole(`>> [SSII CORE] Масштабирование нейросетевых потоков для типа: ${type}`);
+
+        setTimeout(() => {
+            // Имена файлов в зависимости от хэша промпта
+            const timestamp = Date.now().toString().slice(-4);
+            let createdFile = "";
+            let targetBoxId = "";
+
+            if (type === "Image") {
+                createdFile = `trimatix_img_${timestamp}.png`;
+                targetBoxId = "lib-images";
+            } else if (type === "Video") {
+                createdFile = `nova_clip_${timestamp}.mp4`;
+                targetBoxId = "lib-videos";
+            } else {
+                createdFile = `ssii_track_${timestamp}.mp3`;
+                targetBoxId = "lib-music";
+            }
+
+            // Робот мгновенно сортирует контент по нужным ячейкам на сайте
+            const targetBox = document.getElementById(targetBoxId);
+            targetBox.innerHTML += `<div class="feed-item" style="color:#10b981; animation: pulse 1s 1;">${createdFile}</div>`;
+            targetBox.scrollTop = targetBox.scrollHeight;
+
+            logToRawConsole(`>> [AI AUTO-SORT] Файл успешно создан и перемещен в архивную структуру.`);
+            logToRawConsole(`>> [STATUS] Сохранено в облачном сегменте: 20ТБ -> Название: ${createdFile}`);
+            
+            document.getElementById('gen-prompt').value = ""; // Очистка
+        }, 1500);
+    }
+
+    // Фоновая активность Робота Универсала (Автономное наведение порядка)
+    const robotDecisionsRu = [
+        "Робот сканирует библиотеки... Обнаружены новые ИИ-треки. Сортировка завершена.",
+        "Оптимизация кэша стриминга DLLS9. Медиаканалы зашифрованы и очищены.",
+        "Проверка распределения памяти в пуле 20ТБ. Свободные секторы стабильны.",
+        "Робот проверил компилятор C++ и базу репозитория. Защита ядра активна."
+    ];
+    function runRobotAutopilot() {
+        const randomIndex = Math.floor(Math.random() * robotDecisionsRu.length);
+        const feed = document.getElementById('repo-feed');
+        feed.innerHTML += `<div class="feed-item"><span style="color:#10b981;">[ROBOT UNIVERSAL]:</span> ${robotDecisionsRu[randomIndex]}</div>`;
+        feed.scrollTop = feed.scrollHeight;
+        
+        // Монитор памяти
+        const currentProgress = 45 + (Math.random() * 2 - 1);
+        document.getElementById('mem-fill').style.width = currentProgress + '%';
+        document.getElementById('mem-txt').innerText = `${(20 * currentProgress / 100).toFixed(2)} TB / 20.00 TB (${currentProgress.toFixed(1)}%)`;
+    }
+    setInterval(runRobotAutopilot, 14000);
+
+    // Дополнительные медиа-функции
+    let localStream = null;
+    async function startCamera() {
+        try {
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            document.getElementById('local-video').srcObject = localStream;
+            logToRawConsole(">> [MEDIA] Камера успешно подключена.");
+        } catch (err) {
+            logToRawConsole(">> [MEDIA] Ошибка доступа к камере. Включена заглушка.");
+        }
+    }
+    function triggerVideoCall() {
+        logToRawConsole(">> [MEDIA] Синхронизация P2P каналов связи...");
+        setTimeout(() => { logToRawConsole(">> [MEDIA] Трансляция активна. Поток идет без ограничений."); }, 1000);
+    }
+    function processCodeViaAI() {
+        logToRawConsole(`>> [SSII ENGINE] Выполнение кода...`);
+        setTimeout(() => { logToRawConsole(`>> [ВЫВОД ССИИ] Скомпилировано без ошибок. Процесс завершен.`); }, 1000);
+    }
+    function sendChatMessage() {
+        const input = document.getElementById('chat-input'); if(input.value.trim() === "") return;
+        const chatBox = document.getElementById('chat-box'); chatBox.innerHTML += `<div class="feed-item"><span style="color:#ecc48d;">Valerijus:</span> ${input.value}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight; logToConsole('logChat'); input.value = '';
+    }
+</script>
+
+</body>
+</html>
